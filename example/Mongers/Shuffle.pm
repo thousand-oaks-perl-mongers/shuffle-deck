@@ -1,4 +1,4 @@
-package Example;
+package Mongers::Shuffle;
 
 use warnings;
 use strict;
