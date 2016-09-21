@@ -121,7 +121,7 @@ sub report_stats {
         foreach my $stat (qw( count delta ratio expected )) {
             print "\t" . $stat . ": " . ( $stats->{$hand_type}->{$stat} || 0 ) . "\n";
         }
-        $absDelta += abs($stats->{$hand_type}->{delta}) * $stats->{$hand_type}->{expected_count};
+        $absDelta += abs($stats->{$hand_type}->{delta}) * $stats->{$hand_type}->{expected};
     }
     print "total abs delta $absDelta\n";
 }
