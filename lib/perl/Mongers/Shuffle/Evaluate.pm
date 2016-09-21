@@ -7,6 +7,8 @@ use strict;
 
 use List::MoreUtils qw( uniq );
 
+use Time::HiRes qw( gettimeofday tv_interval );
+
 my $hands_scored = {};
 my $hand_count   = 0;
 
@@ -39,6 +41,7 @@ sub execute {
     my $args  = shift;
     my $deck  = [@$base_deck];        # Make a copy
     my $hands = [ [], [], [], [] ];
+    my $elapsed_time = 0;
 
     for ( my $count = 0 ; $count < $args->{count} ; $count++ ) {
         foreach my $hand (@$hands) {
@@ -48,11 +51,16 @@ sub execute {
         }
 
         $hands = [ [], [], [], [] ];
+        my $starttime = [ gettimeofday ];
+        my $deck_copy = [ @$deck ];
 
-        my $shuffled_deck = Mongers::Shuffle::shuffle($deck);
+        my $shuffled_deck = Mongers::Shuffle::shuffle($deck_copy);
+
+        $elapsed_time += tv_interval( $starttime );
+        
         for ( my $rotation = 0 ; $rotation < 5 ; $rotation++ ) {
             for ( my $player = 0 ; $player < 4 ; $player++ ) {
-                push @{ $hands->[$player] }, shift @$deck;
+                push @{ $hands->[$player] }, shift @$shuffled_deck;
             }
         }
         foreach my $hand (@$hands) {
@@ -60,6 +68,7 @@ sub execute {
             my $hand_type = score_hand($hand);
             $hands_scored->{$hand_type}++;
         }
+        $deck = [ $shuffled_deck ];
     }
 
     my $stats = {};
@@ -78,6 +87,8 @@ sub execute {
     }
 
     report_stats($stats);
+
+    print "Elapsed Time: $elapsed_time\n";
 }
 
 sub report_stats {
