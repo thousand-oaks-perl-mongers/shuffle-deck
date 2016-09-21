@@ -70,7 +70,7 @@ sub execute {
             my $hand_type = score_hand($hand);
             $hands_scored->{$hand_type}++;
         }
-        $deck = [ $shuffled_deck ];
+        $deck = [ @$shuffled_deck ];
     }
 
     my $stats = {};
