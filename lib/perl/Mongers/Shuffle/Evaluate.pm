@@ -12,17 +12,19 @@ use Time::HiRes qw( gettimeofday tv_interval );
 my $hands_scored = {};
 my $hand_count   = 0;
 
+my $possible_combinations = 2598960;
+
 my $ideal_ratio = {
-    royal_flush    => 1 / 649739,
-    straight_flush => 1 / 72192,
-    four_of_a_kind => 1 / 4164,
-    full_house     => 1 / 693,
-    flush          => 1 / 508,
-    straight       => 1 / 254,
-    three_of_kind  => 1 / 46.3,
-    two_pair       => 1 / 20,
-    pair           => 1 / 1.37,
-    high_card      => 1 / .995,
+    royal_flush    => 4 / $possible_combinations,
+    straight_flush => 36 / $possible_combinations,
+    four_of_a_kind => 624 / $possible_combinations,
+    full_house     => 3744 / $possible_combinations,
+    flush          => 5108 / $possible_combinations,
+    straight       => 10200 / $possible_combinations,
+    three_of_kind  => 54912 / $possible_combinations,
+    two_pair       => 123552 / $possible_combinations,
+    pair           => 1098240 / $possible_combinations,
+    high_card      => 1302540 / $possible_combinations,
     unknown        => 0,
 };
 
