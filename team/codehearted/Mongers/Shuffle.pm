@@ -5,24 +5,16 @@ use strict;
 
 sub shuffle {
     my ($deck) = @_;
-    my $deck_copy = [ @$deck ];
 
-    # print "START INCOMING DECK\n";
-    # print join ",", @$deck_copy;
-    # print "\n-----\n\n-----\n";
-    # print join ",", @$deck;
-    # print "\nEND INCOMING DECK\n\n";
+    my @order = sort {rand(1000)>500} (0..(scalar(@$deck)-1));
+    my $deck_copy =  [ @$deck[@order] ];
 
 
+#	my %deckHash = map {$_ => 1} @$deck_copy;
+# 	my $new_deck = [keys %deckHash];
+    
 
-    my %deckHash = map {$_ => 1} @$deck_copy;
-    my $new_deck = [keys %deckHash];
-
-    # print "START OUTGOING DECK\n";
-    # print join ",", @$new_deck;
-    # print "\nEND OUTGOING DECK\n\n";
-
-    return $new_deck;
+    return $deck_copy;
 }
 
 1;
