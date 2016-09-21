@@ -55,8 +55,10 @@ sub execute {
         $hands = [ [], [], [], [] ];
         my $starttime = [ gettimeofday ];
         my $deck_copy = [ @$deck ];
-
+        #use YAML;
+        #print Dump $deck_copy;
         my $shuffled_deck = Mongers::Shuffle::shuffle($deck_copy);
+        #print Dump $shuffled_deck;
 
         $elapsed_time += tv_interval( $starttime );
         
@@ -95,6 +97,7 @@ sub execute {
 
 sub report_stats {
     my $stats = shift;
+    my $absDelta = 0;
     foreach my $hand_type (
         qw(
         royal_flush
@@ -118,7 +121,9 @@ sub report_stats {
         foreach my $stat (qw( count delta ratio expected )) {
             print "\t" . $stat . ": " . ( $stats->{$hand_type}->{$stat} || 0 ) . "\n";
         }
+        $absDelta += abs($stats->{$hand_type}->{delta}) * $stats->{$hand_type}->{expected};
     }
+    print "total abs delta $absDelta\n";
 }
 
 sub score_hand {
@@ -128,7 +133,9 @@ sub score_hand {
     foreach my $card (@$hand) {
         my ( $number, $suit ) = split( /:/, $card );
         push @$split_hand, { suit => $suit, number => $number };
+    #    print "$card => [$suit | $number]\n";
     }
+
     my $unique_number = scalar( uniq( map { $_->{number} } @$split_hand ) );
 
     # Check for hands
