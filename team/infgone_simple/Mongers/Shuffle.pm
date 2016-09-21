@@ -1,6 +1,6 @@
 package Mongers::Shuffle;
 
-use v5.20;
+#use v5.20;
 use warnings;
 use strict;
 
@@ -10,9 +10,9 @@ sub shuffle {
     my ($deck) = @_;
     my $deck_copy = [ @$deck ];
 
-    my @new_deck = List::Util::shuffle($deck_copy);
+    my @new_deck = List::Util::shuffle(@$deck_copy);
 
-    return [@new_deck];
+    return \@new_deck;
 }
 
 1;
