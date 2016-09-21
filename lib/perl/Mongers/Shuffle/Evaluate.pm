@@ -53,8 +53,10 @@ sub execute {
         $hands = [ [], [], [], [] ];
         my $starttime = [ gettimeofday ];
         my $deck_copy = [ @$deck ];
-
+        use YAML;
+        print Dump $deck_copy;
         my $shuffled_deck = Mongers::Shuffle::shuffle($deck_copy);
+        print Dump $shuffled_deck;
 
         $elapsed_time += tv_interval( $starttime );
         
@@ -126,7 +128,9 @@ sub score_hand {
     foreach my $card (@$hand) {
         my ( $number, $suit ) = split( /:/, $card );
         push @$split_hand, { suit => $suit, number => $number };
+        print "$card => [$suit | $number]\n";
     }
+
     my $unique_number = scalar( uniq( map { $_->{number} } @$split_hand ) );
 
     # Check for hands
